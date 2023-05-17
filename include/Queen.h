@@ -3,17 +3,14 @@
 #include <vector>
 #include <utility> // for std::pair
 #include "Piece.h" // Include Piece.h
+#include "Move.h"
+
 
 class Queen : public Piece {
 public:
-    Queen(Color color, int x, int y, Board* board);
+    Queen(Color color, Location location, Board* board);
     ~Queen();
 
-    bool isLegalMove(int x, int y) const override;
-    bool isLegalKill(int x, int y) const override;
-    void move(int x, int y) override;
+    vector<Move> getAllLegalMoves() const override;
 
-    // Override to return a vector of pairs, each pair representing a legal move or kill
-    std::vector<std::pair<int, int>> getAllLegalMoves() const override;
-    std::vector<std::pair<int, int>> getAllKillMoves() const override;
 };

@@ -2,8 +2,12 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <utility> // for std::pair
+using std::vector;
+#include <utility> // for std::pair. 
 #include <string>
+#include "Move.h"
+#include "Location.h"
+
 
 // Forward declaration of Board
 class Board;
@@ -13,28 +17,17 @@ enum Color { WHITE, BLACK };
 class Piece {
 protected:
     Color color;
-    int x;
-    int y;
+    Location location;
     char symbol = 'x';
     Board* board;
 
 public:
-    Piece(Color color, int x, int y, Board* board);
+    Piece(Color color, Location location, Board* board);
     virtual ~Piece();
 
     Color getColor() const;
-    int getX() const;
-    int getY() const;
+    Location getLocation() const;
     char getSymbol() const;
+    virtual vector<Move> getAllLegalMoves() const = 0;
 
-    void setX(int x);
-    void setY(int y);
-
-    virtual bool isLegalMove(int x, int y) const = 0;
-    virtual bool isLegalKill(int x, int y) const = 0;
-    virtual void move(int x, int y) = 0;
-
-    // Return a vector of pairs, each pair representing a legal move or kill
-    virtual std::vector<std::pair<int, int>> getAllLegalMoves() const = 0;
-    virtual std::vector<std::pair<int, int>> getAllKillMoves() const = 0;
 };

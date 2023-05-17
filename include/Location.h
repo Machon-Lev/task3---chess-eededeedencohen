@@ -7,6 +7,7 @@ struct Location
 {
 	int x;
 	int y;
+	Location();
 	Location(int x, int y);
 	~Location();
 	bool operator==(const Location& other) const;

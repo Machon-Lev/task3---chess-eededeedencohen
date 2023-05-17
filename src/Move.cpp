@@ -16,3 +16,5 @@ Move::Move(Location start, Location end, bool isEat, Location eat)
 	this->isEat = isEat;
 	this->eat = eat;
 }
+
+Move::~Move() {}

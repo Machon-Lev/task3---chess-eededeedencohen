@@ -3,6 +3,7 @@
 
 struct Move
 {
+	Move(); // default c-tor
 	Move(Location start, Location end, bool isEat, Location eat); // c-tor
 	~Move(); // d-tor
 
@@ -12,11 +13,4 @@ struct Move
 	Location eat; // the location of the piece that can be eaten in the end Move
 };
 
-// implement the c-tor
-Move::Move(Location start, Location end, bool isEat, Location eat)
-{
-	this->start = start;
-	this->end = end;
-	this->isEat = isEat;
-	this->eat = eat;
-}
+
