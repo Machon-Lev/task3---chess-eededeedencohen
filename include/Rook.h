@@ -1,10 +1,5 @@
-// Rook.h
 #pragma once
-#include <vector>
-using std::vector;
-#include <utility> // for std::pair
-#include "Piece.h" // Include Piece.h
-#include "Move.h"
+#include "Piece.h" 
 
 class Rook : public Piece {
 public:

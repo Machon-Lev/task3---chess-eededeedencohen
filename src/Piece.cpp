@@ -1,4 +1,3 @@
-// Piece.cpp
 #include "Piece.h"
 #include "Board.h"
 

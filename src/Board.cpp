@@ -1,4 +1,3 @@
-// Board.cpp
 #include "Board.h"
 #include "Rook.h"
 #include "Knight.h"
@@ -79,6 +78,8 @@ Board::Board() : board(8, std::vector<Piece*>(8, nullptr)) {
 	}
 
     this->turn = WHITE;
+    this->can_en_passant = false;
+    this->en_passant_location = Location(-1, -1); //Location(-1, -1);
 }
 
 Board::~Board() {
@@ -91,20 +92,20 @@ Board::~Board() {
     }
 }
 
-Piece* Board::getPiece(int x, int y) const {
-    return board[x][y];
+Piece* Board::getPiece(Location location) const {
+    return board[location.getX()][location.getY()];
 }
 
-void Board::setPiece(Piece* piece, int x, int y) {
-    board[x][y] = piece;
+void Board::setPiece(Piece* piece, Location location) {
+    board[location.getX()][location.getY()] = piece;
 }
 
-bool Board::isEmpty(int x, int y) const {
-    return board[x][y] == nullptr;
+bool Board::isEmpty(Location location) const {
+    return board[location.getX()][location.getY()] == nullptr;
 }
 
-bool Board::isInside(int x, int y) const {
-    return x >= 0 && x < 8 && y >= 0 && y < 8;
+bool Board::isInside(Location location) const {
+    return location.getX() >= 0 && location.getX() < 8 && location.getY() >= 0 && location.getY() < 8;
 }
 
 void Board::PrintAllPieces() const {
@@ -142,6 +143,126 @@ void Board::PrintBoard() const {
         cout << endl;
     }
 }
+
+
+Color Board::getTurn() const {
+	return this->turn;
+}
+
+void Board::switchTurn() {
+    if (this->turn == WHITE) {
+		this->turn = BLACK;
+	}
+    else {
+		this->turn = WHITE;
+	}
+}
+
+bool Board::CanEnPassant() const {
+	return this->can_en_passant;
+}
+
+void Board::setEnPassantLocation(Location en_passant_location) {
+	this->en_passant_location = en_passant_location;
+	this->can_en_passant = true;
+}
+
+Location Board::getEnPassantLocation() const {
+	return this->en_passant_location;
+}
+
+void Board::printAllPieceLegalMoves(Location location) const {
+    vector<Move> legalMoves;
+    Piece* piece = getPiece(location);
+    if (piece != nullptr) {
+		legalMoves = piece->getAllLegalMoves();
+        for (Move move : legalMoves)
+        {
+            cout << move << endl;
+        }
+        
+    }
+}
+
+// replace the pieces with nullptr:
+void Board::cleanBoard()
+{
+    for (auto& row : board)
+    {
+        for (auto& piece : row)
+        {
+			delete piece;
+			piece = nullptr;
+		}
+	}
+}
+
+
+void Board::testBoard(string boardInStringFormat) {
+	cleanBoard();
+
+    // remove all the '|' from the string:
+    boardInStringFormat.erase(remove(boardInStringFormat.begin(), boardInStringFormat.end(), '|'), boardInStringFormat.end());
+
+    // initialization the board according to the string:
+    for (int row = 0; row < 8; row++)
+    {
+        for (int col = 0; col < 8; col++)
+        {
+            switch (boardInStringFormat[row * 8 + col])
+            {
+                case 'r':
+					board[col][row] = new Rook(BLACK, Location(col, row), this);
+					break;
+				case 'n':
+                    board[col][row] = new Knight(BLACK, Location(col, row), this);
+                    break;
+                case 'b':
+                    board[col][row] = new Bishop(BLACK, Location(col, row), this);
+					break;
+                case 'q':
+					board[col][row] = new Queen(BLACK, Location(col, row), this);
+                    break;
+				case 'k':
+                    board[col][row] = new King(BLACK, Location(col, row), this);
+					break;
+                case 'p':
+					board[col][row] = new Pawn(BLACK, Location(col, row), this);
+                    break;
+				case 'R':
+                    board[col][row] = new Rook(WHITE, Location(col, row), this);
+                    break;
+                case 'N':
+                    board[col][row] = new Knight(WHITE, Location(col, row), this);
+                    break;
+                case 'B':
+                    board[col][row] = new Bishop(WHITE, Location(col, row), this);
+					break;
+                case 'Q':
+					board[col][row] = new Queen(WHITE, Location(col, row), this);
+                    break;
+                case 'K':
+                    board[col][row] = new King(WHITE, Location(col, row), this);
+                    break;
+                case 'P':
+                    board[col][row] = new Pawn(WHITE, Location(col, row), this);
+                    break;
+                default:
+                    board[col][row] = nullptr;
+					break;
+            }
+        }
+    }
+
+}
+
+void Board::setEnPassantFalse() {
+	this->can_en_passant = false;
+    this->en_passant_location = Location(-1, -1);
+}
+
+
+
 
 
 

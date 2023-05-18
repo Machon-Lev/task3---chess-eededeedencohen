@@ -1,9 +1,7 @@
-// Piece.h
 #pragma once
 #include <iostream>
 #include <vector>
 using std::vector;
-#include <utility> // for std::pair. 
 #include <string>
 #include "Move.h"
 #include "Location.h"

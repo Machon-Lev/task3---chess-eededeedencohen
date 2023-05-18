@@ -67,8 +67,103 @@ int main()
 {
 	cout << "Hello World!" << endl;
 	Board board;
-	//board.PrintAllPieces();
+	// ======================
+	//	test all the pieces:
+	// ======================
+
+	// White Pawn
+	board.testBoard("########|########|##p#p###|###P####|##p#p###|########|########|########");
 	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+
+	// White Pawn enpassant
+	board.testBoard("########|########|##p#####|###Pp###|########|########|########|########");
+	board.setEnPassantLocation(Location(4, 2));
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+	board.setEnPassantFalse();
+	cout << "====================" << endl << endl;
+
+	// White king
+	board.testBoard("########|########|##p#####|##pK###|###pp###|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+	cout << "====================" << endl << endl;
+
+	// white bishop
+	board.testBoard("########|########|##p#####|##pB###|###pp###|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+	cout << "====================" << endl << endl;
+
+	// white knight
+	board.testBoard("########|########|##p#####|##pN###|###pp###|pppppppp|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+	cout << "====================" << endl << endl;
+
+	// white rook
+	board.testBoard("########|########|##p#####|##pR###|###pp###|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+
+	// white queen
+	board.testBoard("########|########|##p#####|##pQ###|###pp###|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+
+	// black pawn
+	board.testBoard("########|########|##P#P###|###p####|##P#P###|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+
+	// black pawn enpassant
+	board.testBoard("########|########|########|########|###pP###|########|########|########");
+	board.setEnPassantLocation(Location(4, 5));
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 4));
+	board.setEnPassantFalse();
+	cout << "====================" << endl << endl;
+
+	// black king
+	board.testBoard("########|########|########|##PkP###|##PP####|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+	cout << "====================" << endl << endl;
+
+	// black bishop
+	board.testBoard("########|########|########|##Pb####|##PP####|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+	cout << "====================" << endl << endl;
+
+	// black knight
+	board.testBoard("########|########|########|##Pn####|##PP####|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+	cout << "====================" << endl << endl;
+
+	// black rook
+	board.testBoard("########|########|########|##Pr####|##PP####|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+	cout << "====================" << endl << endl;
+
+	// black queen
+	board.testBoard("########|########|########|##Pq####|##PP####|########|########|########");
+	board.PrintBoard();
+	board.printAllPieceLegalMoves(Location(3, 3));
+
+
+
+
+
+
+
+
+
+
+
 	return 0;
 }
 
