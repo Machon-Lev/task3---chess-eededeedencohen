@@ -153,6 +153,32 @@ int main()
 	board.testBoard("########|########|########|##Pq####|##PP####|########|########|########");
 	board.PrintBoard();
 	board.printAllPieceLegalMoves(Location(3, 3));
+	cout << "====================" << endl << endl;
+	cout << "====================" << endl << endl;
+
+	// chack for king capture
+	board.testBoard("########|########|########|##pKp###|########|########|########|########");
+	board.PrintBoard();
+	cout << endl << board.isKingCapture(WHITE) << endl;
+
+	// chack for king capture
+	board.testBoard("########|########|########|##qK###|########|########|########|########");
+	board.PrintBoard();
+	cout << endl << board.isKingCapture(WHITE) << endl;
+
+	// chack for king capture
+	board.testBoard("########|########|########|##PkP###|########|########|########|########");
+	board.PrintBoard();
+	cout << endl << board.isKingCapture(BLACK) << endl;
+
+	// chack for king capture
+	board.testBoard("########|########|########|##Qk###|########|########|########|########");
+	board.PrintBoard();
+	cout << endl << board.isKingCapture(BLACK) << endl;
+
+
+
+
 
 
 

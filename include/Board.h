@@ -35,4 +35,6 @@ public:
     void cleanBoard();
     void testBoard(string boardInStringFormat);
     void setEnPassantFalse();
+    bool isMoveToOpponentKing(Move move) const;
+    bool isKingCapture(Color playerOfTheKing) const;
 };

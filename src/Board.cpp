@@ -261,6 +261,44 @@ void Board::setEnPassantFalse() {
     this->en_passant_location = Location(-1, -1);
 }
 
+bool Board::isMoveToOpponentKing(Move move) const
+{
+    // case black piece moved to white king:
+    if (this->getPiece(move.start)->getColor() == BLACK && move.isEat && this->getPiece(move.eat)->getSymbol() == 'K')
+    {
+        return true;
+    }
+
+    // case white piece moved to black king:
+    if (this->getPiece(move.start)->getColor() == WHITE && move.isEat && this->getPiece(move.eat)->getSymbol() == 'k')
+    {
+        return true;
+    }
+    return false;
+}
+
+bool Board::isKingCapture(Color playerOfTheKing) const
+{   // foreach piece on the board:
+    for (auto& row : board)
+    {
+        for (auto& piece : row)
+        {
+            // if the piece is not null and its opponent piece:
+            if (piece != nullptr && piece->getColor() != playerOfTheKing)
+            {
+				vector<Move> legalMoves = piece->getAllLegalMoves();
+                for (Move move : legalMoves)
+                {
+                    // return true if the move is to opponent king:
+                    if (this->isMoveToOpponentKing(move))
+						return true;
+				}
+			}
+		}
+	}
+    return false;
+}
+
 
 
 
