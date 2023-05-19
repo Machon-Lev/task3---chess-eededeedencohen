@@ -420,7 +420,41 @@ void Board::movePiece(Move move)
 		this->board[move.eat.getX()][move.eat.getY()] = nullptr;
 	}
 
-    // if the move is promotion and the piece is pawn - convert the pawn to queen:
+
+    // case pawn move 2 steps
+    if (piece->getSymbol() == 'P' &&  move.end.getY() == 4)
+    {
+        this->can_en_passant = true;
+        this->en_passant_location = Location(move.start.getX(), 5);
+    }
+    else if (piece->getSymbol() == 'p' && move.end.getY() == 3)
+    {
+		this->can_en_passant = true;
+		this->en_passant_location = Location(move.start.getX(), 2);
+	}
+    else
+    {
+		this->can_en_passant = false;
+		this->en_passant_location = Location(-1, -1);
+	}
+
+    // pawn promotion (to queen):
+    if (piece->getSymbol() == 'P' && move.end.getY() == 0)
+    {
+		// delete the pawn:
+		delete this->board[move.end.getX()][move.end.getY()];
+		// create new queen:
+		this->board[move.end.getX()][move.end.getY()] = new Queen(WHITE, move.end, this);
+	}
+    else if (piece->getSymbol() == 'p' && move.end.getY() == 7)
+    {
+		// delete the pawn:
+		delete this->board[move.end.getX()][move.end.getY()];
+		// create new queen:
+		this->board[move.end.getX()][move.end.getY()] = new Queen(BLACK, move.end, this);
+	}
+
+
 
     // update the board with the new location of the piece:
     this->board[move.end.getX()][move.end.getY()] =  piece;
