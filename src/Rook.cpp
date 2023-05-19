@@ -8,6 +8,7 @@ Rook::Rook(Color color, Location location, Board* board) : Piece(color, location
     this->symbol = (color == WHITE) ? 'R' : 'r';
 }
 
+
 Rook::~Rook() {}
 
 vector<Move> Rook::getAllLegalMoves() const {

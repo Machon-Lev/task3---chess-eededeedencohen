@@ -6,6 +6,7 @@ Pawn::Pawn(Color color, Location location, Board* board) : Piece(color, location
 	this->symbol = (color == WHITE) ? 'P' : 'p';
 }
 
+
 Pawn::~Pawn() {}
 
 vector<Move> Pawn::getAllLegalMoves() const {

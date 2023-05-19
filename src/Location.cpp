@@ -3,8 +3,8 @@
 
 
 Location::Location() {
-	this->x = 0;
-	this->y = 0;
+	this->x = -1;
+	this->y = -1;
 }
 
 Location::Location(int x, int y) {
@@ -34,8 +34,8 @@ int Location::getY() const {
 }
 
 void Location::moveTo(Location newLocation) {
-	this->x = newLocation.x;
-	this->y = newLocation.y;
+	this->x = newLocation.getX();
+	this->y = newLocation.getY();
 }
 
 string Location::getLocationOfChessFormat() const {

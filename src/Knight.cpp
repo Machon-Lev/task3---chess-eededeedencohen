@@ -5,6 +5,7 @@ Knight::Knight(Color color, Location location, Board* board) : Piece(color, loca
     this->symbol = (color == WHITE) ? 'N' : 'n';
 }
 
+
 Knight::~Knight() {}
 
 vector<Move> Knight::getAllLegalMoves() const {

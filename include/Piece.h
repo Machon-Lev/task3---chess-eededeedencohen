@@ -23,9 +23,10 @@ public:
     Piece(Color color, Location location, Board* board);
     virtual ~Piece();
 
+
     Color getColor() const;
     Location getLocation() const;
     char getSymbol() const;
-    virtual vector<Move> getAllLegalMoves() const = 0;
-
+    void move(Location endLocation);
+    virtual vector<Move> getAllLegalMoves() const = 0;    
 };

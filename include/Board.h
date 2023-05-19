@@ -19,6 +19,8 @@ private:
 public:
     Board();
     ~Board();
+    Board(const Board& other);
+
     // Add other necessary methods...
     Piece* getPiece(Location location) const;
     void setPiece(Piece* piece, Location location);
@@ -37,4 +39,6 @@ public:
     void setEnPassantFalse();
     bool isMoveToOpponentKing(Move move) const;
     bool isKingCapture(Color playerOfTheKing) const;
+    vector<Move> getAllLegalMoves(Color player);
+    void movePiece(Move move);
 };

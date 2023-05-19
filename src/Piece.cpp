@@ -7,6 +7,7 @@ Piece::Piece(Color color, Location location, Board* board) {
     this->board = board;
 }
 
+
 Piece::~Piece() {}
 
 Color Piece::getColor() const {
@@ -19,6 +20,11 @@ Location Piece::getLocation() const {
 
 char Piece::getSymbol() const {
     return this->symbol;
+}
+
+void Piece::move(Location endLocation)
+{
+    this->location.moveTo(endLocation);
 }
 
 

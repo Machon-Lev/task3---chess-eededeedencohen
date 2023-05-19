@@ -92,6 +92,77 @@ Board::~Board() {
     }
 }
 
+// copy constructor:
+Board::Board(const Board& other) : board(8, std::vector<Piece*>(8, nullptr)) {
+	// copy the board:
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++)
+        {
+            if (other.board[x][y] != nullptr) {
+                if (dynamic_cast<Pawn*>(other.board[x][y]) != nullptr) {
+                    Color color = other.board[x][y]->getColor();
+                    Location location = other.board[x][y]->getLocation();
+                    this->board[x][y] = new Pawn(color, location, this);
+				}
+                else if (dynamic_cast<Knight*>(other.board[x][y]) != nullptr) {
+                     Color color = other.board[x][y]->getColor();
+                     Location location = other.board[x][y]->getLocation();
+                     this->board[x][y] = new Knight(color, location, this);
+                }
+                else if (dynamic_cast<Bishop*>(other.board[x][y]) != nullptr) {
+                    Color color = other.board[x][y]->getColor();
+                    Location location = other.board[x][y]->getLocation();
+                    this->board[x][y] = new Bishop(color, location, this);
+				}
+                else if (dynamic_cast<Rook*>(other.board[x][y]) != nullptr) {
+					Color color = other.board[x][y]->getColor();
+					Location location = other.board[x][y]->getLocation();
+					this->board[x][y] = new Rook(color, location, this);
+				}
+                else if (dynamic_cast<Queen*>(other.board[x][y]) != nullptr) {
+                    Color color = other.board[x][y]->getColor();
+                    Location location = other.board[x][y]->getLocation();
+                    this->board[x][y] = new Queen(color, location, this);
+				}
+                else if (dynamic_cast<King*>(other.board[x][y]) != nullptr) {
+                    Color color = other.board[x][y]->getColor();
+                    Location location = other.board[x][y]->getLocation();
+                    this->board[x][y] = new King(color, location, this);
+				}
+                else {
+					this->board[x][y] = nullptr;
+                }
+
+                this->turn = other.turn;
+                this->can_en_passant = other.can_en_passant;
+                this->en_passant_location = other.en_passant_location;
+
+			}
+		}
+	}
+	// copy the turn:
+	this->turn = other.turn;
+	// copy the en passant:
+	this->can_en_passant = other.can_en_passant;
+	this->en_passant_location = other.en_passant_location;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Piece* Board::getPiece(Location location) const {
     return board[location.getX()][location.getY()];
 }
@@ -298,6 +369,64 @@ bool Board::isKingCapture(Color playerOfTheKing) const
 	}
     return false;
 }
+
+
+vector<Move> Board::getAllLegalMoves(Color player) 
+{
+    vector<Move> allLegalMoves;
+    for (auto& row : board)
+    {
+        for (auto& piece : row)
+        {
+            if (piece != nullptr && piece->getColor() == player) // the piece of the given player:
+            {
+                // store the all legal moves of the piece:
+                vector<Move> legalMoves = piece->getAllLegalMoves();
+                for (Move move : legalMoves) // foreach legal move of the piece:
+                {
+                    // copy the board with copy constructor:
+                    Board boardCopy(*this);
+                    // move the piece on the board copy:
+                    boardCopy.movePiece(move);
+                    // if the king
+                    if (!boardCopy.isKingCapture(player))
+                    {
+						allLegalMoves.push_back(move);
+					}
+                }
+            }
+        }
+    }
+    return allLegalMoves;
+}
+
+
+void Board::movePiece(Move move)
+{
+    Piece* piece = this->getPiece(move.start);
+
+    // move the piece on the board
+    piece->move(move.end);
+
+    // null the start location:
+    this->board[move.start.getX()][move.start.getY()] = nullptr;
+
+    // if the move is eat:
+    if (move.isEat)
+    {
+		// delete the eat piece:
+		delete this->board[move.eat.getX()][move.eat.getY()];
+		// null the eat location:
+		this->board[move.eat.getX()][move.eat.getY()] = nullptr;
+	}
+
+    // if the move is promotion and the piece is pawn - convert the pawn to queen:
+
+    // update the board with the new location of the piece:
+    this->board[move.end.getX()][move.end.getY()] =  piece;
+}
+
+
 
 
 

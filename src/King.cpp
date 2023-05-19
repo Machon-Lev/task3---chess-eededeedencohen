@@ -5,6 +5,7 @@ King::King(Color color, Location location, Board* board) : Piece(color, location
     this->symbol = (color == WHITE) ? 'K' : 'k';
 }
 
+
 King::~King() {}
 
 vector<Move> King::getAllLegalMoves() const {

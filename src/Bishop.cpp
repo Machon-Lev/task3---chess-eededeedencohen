@@ -5,6 +5,7 @@ Bishop::Bishop(Color color, Location location, Board* board) : Piece(color, loca
     this->symbol = (color == WHITE) ? 'B' : 'b';
 }
 
+
 Bishop::~Bishop() {}
 
 vector<Move> Bishop::getAllLegalMoves() const {

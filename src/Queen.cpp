@@ -5,6 +5,7 @@ Queen::Queen(Color color, Location location, Board* board) : Piece(color, locati
     this->symbol = (color == WHITE) ? 'Q' : 'q';
 }
 
+
 Queen::~Queen() {}
 
 vector<Move> Queen::getAllLegalMoves() const {
