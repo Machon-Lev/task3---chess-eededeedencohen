@@ -191,8 +191,10 @@ void Board::PrintAllPieces() const {
 
 // print the board:
 void Board::PrintBoard() const {
+    cout << "  0 1 2 3 4 5 6 7" << endl;
     for (int row = 0; row < 8; row++)
     {
+        cout << row << " ";
         for (int col = 0; col < 8; col++)
         {
             if (board[col][row] == nullptr)
@@ -211,8 +213,10 @@ void Board::PrintBoard() const {
 				}
 			}
 		}
+        cout << row << " ";
         cout << endl;
     }
+    cout << "  0 1 2 3 4 5 6 7" << endl;
 }
 
 
@@ -403,6 +407,14 @@ vector<Move> Board::getAllLegalMoves(Color player)
 
 void Board::movePiece(Move move)
 {
+
+    // check the turn of the player:
+    if (this->turn != this->getPiece(move.start)->getColor())
+    {
+		cout << "It's not your turn!";
+        return;
+	}
+
     Piece* piece = this->getPiece(move.start);
 
     // move the piece on the board
@@ -454,10 +466,11 @@ void Board::movePiece(Move move)
 		this->board[move.end.getX()][move.end.getY()] = new Queen(BLACK, move.end, this);
 	}
 
-
-
     // update the board with the new location of the piece:
     this->board[move.end.getX()][move.end.getY()] =  piece;
+
+    // change the turn:
+    this->turn = (this->turn == WHITE) ? BLACK : WHITE;
 }
 
 

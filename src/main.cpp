@@ -176,85 +176,148 @@ int main()
 	cout << endl << board.isKingCapture(BLACK) << endl;
 	*/
 	// chack the All legal moves:
-	board.testBoard("########|########|########|###K#Pr#|########|########|########|########");
-	cout << "Board with white king and white pawn that pin the king from black rook" << endl;
-	board.PrintBoard();
-	cout << " all the legal moves for the black player: " << endl;
-	vector<Move> allLegalMoves = board.getAllLegalMoves(BLACK);
-	for (int i = 0; i < allLegalMoves.size(); i++)
-	{
-		cout << allLegalMoves[i] << endl;
-	}
-	cout << endl;
-	cout << " all the legal moves for the white player: " << endl;
-	allLegalMoves = board.getAllLegalMoves(WHITE);
-	for (int i = 0; i < allLegalMoves.size(); i++)
-	{
-		cout << allLegalMoves[i] << endl;
-	}
-	cout << endl;
+	// board.testBoard("########|########|########|###K#Pr#|########|########|########|########");
+	// cout << "Board with white king and white pawn that pin the king from black rook" << endl;
+	// board.PrintBoard();
+	// cout << " all the legal moves for the black player: " << endl;
+	// vector<Move> allLegalMoves = board.getAllLegalMoves(BLACK);
+	// for (int i = 0; i < allLegalMoves.size(); i++)
+	// {
+	// 	cout << allLegalMoves[i] << endl;
+	// }
+	// cout << endl;
+	// cout << " all the legal moves for the white player: " << endl;
+	// allLegalMoves = board.getAllLegalMoves(WHITE);
+	// for (int i = 0; i < allLegalMoves.size(); i++)
+	// {
+	// 	cout << allLegalMoves[i] << endl;
+	// }
+	// cout << endl;
 
-	if (board.isKingCapture(WHITE))
-		cout << "The white king is in check" << endl << endl << endl;
-	else
-		cout << "The white king is not in check" <<endl<< "========================" << endl << endl;
+	// if (board.isKingCapture(WHITE))
+	// 	cout << "The white king is in check" << endl << endl << endl;
+	// else
+	// 	cout << "The white king is not in check" <<endl<< "========================" << endl << endl;
 
-	// copy the board:
-	Board board2 = board;
+	// // copy the board:
+	// Board board2 = board;
 
 	
 
-	cout << endl << endl;
-	cout << "After moving the piece: " << endl;
-	board.movePiece(Move(Location(5, 3), Location(5, 2)));
+	// cout << endl << endl;
+	// cout << "After moving the piece: " << endl;
+	// board.movePiece(Move(Location(5, 3), Location(5, 2)));
+	// board.PrintBoard();
+
+	// cout << endl;
+	// cout << " all the legal moves for the black player: " << endl;
+	// allLegalMoves = board.getAllLegalMoves(BLACK);
+	// for (int i = 0; i < allLegalMoves.size(); i++)
+	// {
+	// 	cout << allLegalMoves[i] << endl;
+	// }
+	// allLegalMoves = board.getAllLegalMoves(WHITE);
+	// cout << endl;
+	// cout << " all the legal moves for the white player: " << endl;
+	// for (int i = 0; i < allLegalMoves.size(); i++)
+	// {
+	// 	cout << allLegalMoves[i] << endl;
+	// }
+	// // print is the white king in check
+	// cout << endl;
+	// if (board.isKingCapture(WHITE))
+	// 	cout << "The white king is in check" << endl;
+	// else
+	// 	cout << "The white king is not in check" << endl;
+
+
+	// cout << endl << endl;
+
+	// // print the board2:
+	// board2.PrintBoard();
+	// cout << endl;
+	// cout << " all the legal moves for the black player: " << endl;
+	// allLegalMoves = board2.getAllLegalMoves(BLACK);
+	// for (int i = 0; i < allLegalMoves.size(); i++)
+	// {
+	// 	cout << allLegalMoves[i] << endl;
+	// }
+	// allLegalMoves = board2.getAllLegalMoves(WHITE);
+	// cout << endl;
+	// cout << " all the legal moves for the white player: " << endl;
+	// for (int i = 0; i < allLegalMoves.size(); i++)
+	// {
+	// 	cout << allLegalMoves[i] << endl;
+	// }
+	// // print is the white king in check
+	// cout << endl;
+	// if (board2.isKingCapture(WHITE))
+	// 	cout << "The white king is in check" << endl;
+	// else
+	// 	cout << "The white king is not in check" << endl;
+
+	//========================
+	// test the board class:
+	//========================
 	board.PrintBoard();
+	Location from(-1, -1);
+	Location to(-1, -1);
+	int xFrom=0, yFrom=0, xTo=0, yTo=0;
+	// while loop for the game until press -1 -1 -1 -1
 
-	cout << endl;
-	cout << " all the legal moves for the black player: " << endl;
-	allLegalMoves = board.getAllLegalMoves(BLACK);
-	for (int i = 0; i < allLegalMoves.size(); i++)
+	while (true)
 	{
-		cout << allLegalMoves[i] << endl;
+		vector<Move> allLegalMoves = board.getAllLegalMoves(board.getTurn());
+		// print all the legal moves
+		cout << "All the legal moves for the " << board.getTurn() << " player:" << endl;
+		for (int i = 0; i < allLegalMoves.size(); i++)
+		{
+			cout << allLegalMoves[i] << endl;
+		}
+		cout << endl;
+
+		cin >> xFrom >> yFrom >> xTo >> yTo;
+		if (xFrom == -1 && yFrom == -1 && xTo == -1 && yTo == -1)
+			break;
+		from = Location(xFrom, yFrom);
+		to = Location(xTo, yTo);
+
+		// validate if is legal move
+		bool isLegalMove = false;
+		int indexOfLegalMove = -1;
+		for (int i = 0; i < allLegalMoves.size(); i++)
+		{
+			if (allLegalMoves[i].start == from && allLegalMoves[i].end == to)
+			{
+				isLegalMove = true;
+				indexOfLegalMove = i;
+				break;
+			}
+		}
+		if (!isLegalMove)
+		{
+			system("cls");
+			board.PrintBoard();
+			cout << "Illegal move" << endl;
+			continue;
+		}
+
+		// move the piece
+		board.movePiece(allLegalMoves[indexOfLegalMove]);
+
+		// clear the screen
+		system("cls");
+
+		// print the board
+		board.PrintBoard();
 	}
-	allLegalMoves = board.getAllLegalMoves(WHITE);
-	cout << endl;
-	cout << " all the legal moves for the white player: " << endl;
-	for (int i = 0; i < allLegalMoves.size(); i++)
-	{
-		cout << allLegalMoves[i] << endl;
-	}
-	// print is the white king in check
-	cout << endl;
-	if (board.isKingCapture(WHITE))
-		cout << "The white king is in check" << endl;
-	else
-		cout << "The white king is not in check" << endl;
 
 
-	cout << endl << endl;
 
-	// print the board2:
-	board2.PrintBoard();
-	cout << endl;
-	cout << " all the legal moves for the black player: " << endl;
-	allLegalMoves = board2.getAllLegalMoves(BLACK);
-	for (int i = 0; i < allLegalMoves.size(); i++)
-	{
-		cout << allLegalMoves[i] << endl;
-	}
-	allLegalMoves = board2.getAllLegalMoves(WHITE);
-	cout << endl;
-	cout << " all the legal moves for the white player: " << endl;
-	for (int i = 0; i < allLegalMoves.size(); i++)
-	{
-		cout << allLegalMoves[i] << endl;
-	}
-	// print is the white king in check
-	cout << endl;
-	if (board2.isKingCapture(WHITE))
-		cout << "The white king is in check" << endl;
-	else
-		cout << "The white king is not in check" << endl;
+	
+
+	
+	
 
 	
 
