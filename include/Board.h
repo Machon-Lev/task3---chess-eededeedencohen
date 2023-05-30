@@ -60,12 +60,16 @@ public:
     bool MoveIsNotLegal(Move move) const;
 
     // code 31: the Move will cause checkmate
-    bool MoveWillCauseCheckmate(Move move, Color player) const;
+    bool MoveWillCauseCheckmate(Move move, Color player);
 
-    // code 41: move is legal and cause check
-    bool MoveIsLegalAndCauseCheck(Move move, Color player) const;
+    // code 41+42: move is legal and cause check
+    int CheckIfLegalMove(Move move, Color player);
 
-    // code 42: move is legal and not cause check
-    bool MoveIsLegalAndNotCauseCheck(Move move, Color player) const;
+    // code 51: move is en passant move
+    //bool MoveIsEnPassantMove(Move move);
+
+    Move convertStringMoveToMove(string moveInStringFormat);
+
+    int getCodeOfMoving(Move move);
 
 };

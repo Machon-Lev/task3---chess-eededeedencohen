@@ -10,7 +10,7 @@ using std::vector;
 // Forward declaration of Board
 class Board;
 
-enum Color { WHITE, BLACK };
+enum Color { WHITE, BLACK ,NONE};
 
 class Piece {
 protected:

@@ -413,7 +413,7 @@ void Board::movePiece(Move move)
     // check the turn of the player:
     if (this->turn != this->getPiece(move.start)->getColor())
     {
-		cout << "It's not your turn!";
+		//cout << "It's not your turn!";
         return;
 	}
 
@@ -483,22 +483,28 @@ void Board::movePiece(Move move)
 // code 11: the source location is empty
 bool Board::sourceLocationIsEmpty(Location sourceLocation) const
 {
-    if (this->board[sourceLocation.getX()][sourceLocation.getY()] == nullptr)
+    Piece* tempPiece = this->board[sourceLocation.x][sourceLocation.y];
+    if(tempPiece->getColor()== NONE)
 		return true;
+	return false;
 }
 
 // code 12: the source location is opponent piece
 bool Board::sourceLocationIsOpponentPiece(Location sourceLocation, Color player) const
 {
-    if (this->board[sourceLocation.getX()][sourceLocation.getY()]->getColor() != player)
+    Piece* tempPiece = this->board[sourceLocation.x][sourceLocation.y];
+    if (tempPiece->getColor() != player && tempPiece->getColor() != NONE)
         return true;
+    return false;
 }
 
 // code 13: the destination location is player piece
 bool Board::destinationLocationIsPlayerPiece(Location destinationLocation, Color player) const
 {
-    if (this->board[destinationLocation.getX()][destinationLocation.getY()]->getColor() == player)
+    Piece* tempPiece = this->board[destinationLocation.x][destinationLocation.y];
+	if (tempPiece->getColor() == player)
 		return true;
+	return false;
 }
 
 // code 21: the Move is illegal Because the Piece is not move like that
@@ -519,9 +525,6 @@ bool Board::MoveIsNotLegal(Move move) const
 // code 31: the Move will cause checkmate
 bool Board::MoveWillCauseCheckmate(Move move, Color player)
 {
-    // save all the moves of the piece and save all the board legal moves:
-    // if the piece move is not in the board legal moves: return true
-    // else: return false
     vector<Move> pieceMoves = this->board[move.start.getX()][move.start.getY()]->getAllLegalMoves();
     vector<Move> boardLegalMoves = this->getAllLegalMoves(player); // the board legal moves of the player
     for (Move pieceMove : pieceMoves)
@@ -539,26 +542,104 @@ bool Board::MoveWillCauseCheckmate(Move move, Color player)
     return false;
 }
 
-// code 41: move is legal and cause check
-bool Board::MoveIsLegalAndCauseCheck(Move move, Color player)
-{
-    vector<Move> boardLegalMoves = this->getAllLegalMoves(player); // the board legal moves of the player
-    if (boardLegalMoves.size() == 0 && this->isKingCapture(player))
-		return true;
-    else 
-        return false;
-}
 
-// code 42: move is legal and not cause check
-bool Board::MoveIsLegalAndNotCauseCheck(Move move, Color player)
+// code 41+42: move is legal and not cause check
+int Board::CheckIfLegalMove(Move move, Color player)
 {
     vector<Move> boardLegalMoves = this->getAllLegalMoves(player); // the board legal moves of the player
 	if (boardLegalMoves.size() != 0)
-		return true;
-	else 
-		return false;
 
+        // simulation of the move on the board. foreach legal move of the board:
+        for (Move boardLegalMove : boardLegalMoves)
+        {
+			// if the move is legal => run simulation of the move
+            if (boardLegalMove.start == move.start && boardLegalMove.end == move.end)
+            {
+                // copy the board with copy constructor:
+                Board boardCopy = Board(*this);
+                // do the move on the board copy:
+                boardCopy.movePiece(move);
+                vector<Move> AllLegalMoves = boardCopy.getAllLegalMoves(player);
+                // if the opponent has no any move after the move => checkmate
+                if (AllLegalMoves.size() != 0)
+                {
+                    Color turn = this->turn;
+                    this->movePiece(move);
+                    turn = this->turn;
+                    AllLegalMoves = this->getAllLegalMoves(turn);
+                    if (AllLegalMoves.size() == 0)
+						return 41;
+					else
+						return 42;
+                }
+					
+			}
+		}  
+	return 5;
 }
+
+// code 51: the move is en passant
+//TO DO:
+
+Move Board::convertStringMoveToMove(string moveInStringFormat)
+{
+    if (moveInStringFormat.length() != 4)
+		return Move(Location(0, 0), Location(0, 0)); // return illegal move - 
+
+    char moveInCharArray[5];
+    strcpy(moveInCharArray, moveInStringFormat.c_str());
+    int xFrom = moveInCharArray[0] - '1';
+    int yFrom = moveInCharArray[1] - 'a';
+    int xTo = moveInCharArray[2] - '1';
+    int yTo = moveInCharArray[3] - 'a';
+
+    Move move = Move(Location(xFrom, yFrom), Location(xTo, yTo));
+
+    // if the move is legal move of the board:
+    vector <Move> boardLegalMoves = this->getAllLegalMoves(this->turn);
+    for (Move boardLegalMove : boardLegalMoves)
+    {
+        // if the start and end of the move is legal:
+        if (boardLegalMove.start == move.start && boardLegalMove.end == move.end)
+			move.isEat = boardLegalMove.isEat;
+        // 'eat' is the opponent's piece that will be eaten by the piece that makes the move
+            move.eat = boardLegalMove.eat; 
+    }
+    return move;
+}
+
+int Board::getCodeOfMoving(Move move)
+{
+    // case code 41: the player that make the move is checkmate
+
+
+    // case code 11: the source location is empty
+    if (this->sourceLocationIsEmpty(move.start))
+        return 11;
+
+    // case code 12: the source location is opponent piece
+    if (this->sourceLocationIsOpponentPiece(move.start, this->turn))
+		return 12;
+
+    // case code 13: the destination location is player piece
+	if (this->destinationLocationIsPlayerPiece(move.end, this->turn))
+        return 13;
+
+	// case code 21: the Move is illegal Because the Piece is not move like that
+	if (this->MoveIsNotLegal(move))
+		return 21;
+
+	// case code 31: the Move will cause checkmate
+	if (this->MoveWillCauseCheckmate(move, this->turn))
+		return 31;
+
+    // case code 41: move is legal and cause check
+    int code = this->CheckIfLegalMove(move, this->turn);
+    return code;
+    
+}
+
+
 
 
 

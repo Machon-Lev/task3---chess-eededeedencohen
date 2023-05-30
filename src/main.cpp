@@ -1,71 +1,106 @@
 // Chess 
-// #include "Chess.h"
+#include "Chess.h"
+#include "Board.h"
 
 
 
-// int main()
-// {
-// 	/* */
-// 	string board = "RNBQKBNRPPPPPPPP################################pppppppprnbqkbnr"; 
-// //	string board = "##########K###############################R#############r#r#####";
-// 	Chess a(board);
-// 	int codeResponse = 0;
-// 	string res = a.getInput(); 
-// 	while (res != "exit")
-// 	{
-// 		/* 
-// 		codeResponse value : 
-// 		Illegal movements : 
-// 		11 - there is not piece at the source  
-// 		12 - the piece in the source is piece of your opponent
-// 		13 - there one of your pieces at the destination 
-// 		21 - illegal movement of that piece 
-// 		31 - this movement will cause you checkmate
+int main()
+{
+	/* */   
+	string board = "#######k########################################PPRPPPPP#q##KBNR";
+	//board = "################################################################";
+	Board backstageBoard;
+	
+	backstageBoard.testBoard("#######k########################################PPRPPPPP#q##KBNR");
+//	string board = "##########K###############################R#############r#r#####";
+	Chess a(board);
+	int codeResponse = 0;
+	string res = a.getInput(); 
+	int ySource = res[0] - 'a';
+	int xSource = res[1] - '1';
+	int yDest = res[2] - 'a';
+	int xDest = res[3] - '1';
+	Move turnMove;
+	turnMove.start = Location(xSource, ySource);
+	turnMove.end = Location(xDest, yDest);
+	int code = backstageBoard.getCodeOfMoving(turnMove);
+	cout << "code = " << code << endl;
 
-// 		legal movements : 
-// 		41 - the last movement was legal and cause check 
-// 		42 - the last movement was legal, next turn 
-// 		*/
+	while (res != "exit")
+	{
+		backstageBoard.PrintBoard();
+		/* 
+		codeResponse value : 
+		Illegal movements : 
+		11 - there is not piece at the source  
+		12 - the piece in the source is piece of your opponent
+		13 - there one of your pieces at the destination 
+		21 - illegal movement of that piece 
+		31 - this movement will cause you checkmate
 
-// 		/**/
-// 		{ // put your code here instead that code
-// 			cout << "code response >> ";
-// 			cin >> codeResponse;
-// 		}
-// 		/**/
+		legal movements : 
+		41 - the last movement was legal and cause check 
+		42 - the last movement was legal, next turn 
+		*/
+		
+		//codeResponse = b.getCodeOfMoving(b.convertStringMoveToMove(res));
 
-// 		a.setCodeResponse(codeResponse);
-// 		res = a.getInput(); 
-// 	}
+		/**/
+		{ // put your code here instead that code
+			cout << "code response >> " << code;
+			//cin >> codeResponse;			
+		}
+		/**/
+		a.setCodeResponse(code);
+		res = a.getInput(); 
 
-// 	cout << endl << "Exiting " << endl; 
-// 	return 0;
-// }
+		// conver the input to move 
+		int ySource = res[0] - 'a';
+		cout << "ySource = " << ySource << endl;
+		int xSource = res[1] - '1';
+		cout << "xSource = " << xSource << endl;
+		int yDest = res[2] - 'a';
+		cout << "yDest = " << yDest << endl;
+		int xDest = res[3] - '1';
+		cout << "xDest = " << xDest << endl;
+		backstageBoard.PrintAllPieces();
+		backstageBoard.getAllLegalMoves(backstageBoard.getTurn());
+		turnMove.start = Location(xSource, ySource);
+		turnMove.end = Location(xDest, yDest);
+
+		// check the code of the movement
+		code = backstageBoard.getCodeOfMoving(turnMove);
+		cout << "code = " << code << endl;
+	}
+
+	cout << endl << "Exiting " << endl; 
+	return 0;
+}
 
 
 // ==================
 // Temp Main Class:
 // ==================
 
-#include <iostream>
-#include <string>
-using std::cout;
-using std::cin;
-using std::endl;
+// #include <iostream>
+// #include <string>
+// using std::cout;
+// using std::cin;
+// using std::endl;
 
-#include "Board.h"
-#include "Piece.h"
-#include "Bishop.h"
-#include "King.h"
-#include "Knight.h"
-#include "Pawn.h"
-#include "Queen.h"
-#include "Rook.h"
+// #include "Board.h"
+// #include "Piece.h"
+// #include "Bishop.h"
+// #include "King.h"
+// #include "Knight.h"
+// #include "Pawn.h"
+// #include "Queen.h"
+// #include "Rook.h"
 
 
-int main()
-{
-	Board board;
+// int main()
+// {
+// 	Board board;
 	// ======================
 	//	test all the pieces:
 	// ======================
@@ -256,72 +291,65 @@ int main()
 	// else
 	// 	cout << "The white king is not in check" << endl;
 
+
+
+
 	//========================
 	// test the board class:
 	//========================
-	board.PrintBoard();
-	Location from(-1, -1);
-	Location to(-1, -1);
-	int xFrom=0, yFrom=0, xTo=0, yTo=0;
-	// while loop for the game until press -1 -1 -1 -1
+	// board.PrintBoard();
+	// Location from(-1, -1);
+	// Location to(-1, -1);
+	// int xFrom=0, yFrom=0, xTo=0, yTo=0;
+	// // while loop for the game until press -1 -1 -1 -1
 
-	while (true)
-	{
-		vector<Move> allLegalMoves = board.getAllLegalMoves(board.getTurn());
-		// print all the legal moves
-		cout << "All the legal moves for the " << board.getTurn() << " player:" << endl;
-		for (int i = 0; i < allLegalMoves.size(); i++)
-		{
-			cout << allLegalMoves[i] << endl;
-		}
-		cout << endl;
+	// while (true)
+	// {
+	// 	vector<Move> allLegalMoves = board.getAllLegalMoves(board.getTurn());
+	// 	// print all the legal moves
+	// 	cout << "All the legal moves for the " << board.getTurn() << " player:" << endl;
+	// 	for (int i = 0; i < allLegalMoves.size(); i++)
+	// 	{
+	// 		cout << allLegalMoves[i] << endl;
+	// 	}
+	// 	cout << endl;
 
-		cin >> xFrom >> yFrom >> xTo >> yTo;
-		if (xFrom == -1 && yFrom == -1 && xTo == -1 && yTo == -1)
-			break;
-		from = Location(xFrom, yFrom);
-		to = Location(xTo, yTo);
+	// 	cin >> xFrom >> yFrom >> xTo >> yTo;
+	// 	if (xFrom == -1 && yFrom == -1 && xTo == -1 && yTo == -1)
+	// 		break;
+	// 	from = Location(xFrom, yFrom);
+	// 	to = Location(xTo, yTo);
 
-		// validate if is legal move
-		bool isLegalMove = false;
-		int indexOfLegalMove = -1;
-		for (int i = 0; i < allLegalMoves.size(); i++)
-		{
-			if (allLegalMoves[i].start == from && allLegalMoves[i].end == to)
-			{
-				isLegalMove = true;
-				indexOfLegalMove = i;
-				break;
-			}
-		}
-		if (!isLegalMove)
-		{
-			system("cls");
-			board.PrintBoard();
-			cout << "Illegal move" << endl;
-			continue;
-		}
+	// 	// validate if is legal move
+	// 	bool isLegalMove = false;
+	// 	int indexOfLegalMove = -1;
+	// 	for (int i = 0; i < allLegalMoves.size(); i++)
+	// 	{
+	// 		if (allLegalMoves[i].start == from && allLegalMoves[i].end == to)
+	// 		{
+	// 			isLegalMove = true;
+	// 			indexOfLegalMove = i;
+	// 			break;
+	// 		}
+	// 	}
+	// 	if (!isLegalMove)
+	// 	{
+	// 		system("cls");
+	// 		board.PrintBoard();
+	// 		cout << "Illegal move" << endl;
+	// 		continue;
+	// 	}
 
-		// move the piece
-		board.movePiece(allLegalMoves[indexOfLegalMove]);
+	// 	// move the piece
+	// 	board.movePiece(allLegalMoves[indexOfLegalMove]);
 
-		// clear the screen
-		system("cls");
+	// 	// clear the screen
+	// 	system("cls");
 
-		// print the board
-		board.PrintBoard();
-	}
+	// 	// print the board
+	// 	board.PrintBoard();
+	// }
 
-
-
-	
-
-	
-	
-
-	
-
-
-	return 0;
-}
+//	return 0;
+//}
 

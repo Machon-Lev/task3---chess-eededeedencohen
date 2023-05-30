@@ -11,6 +11,9 @@ Piece::Piece(Color color, Location location, Board* board) {
 Piece::~Piece() {}
 
 Color Piece::getColor() const {
+    if (this == nullptr) {
+		return NONE;
+	}
     return this->color;
 }
 
