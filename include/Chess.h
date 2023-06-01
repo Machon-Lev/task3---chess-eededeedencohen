@@ -29,6 +29,7 @@ class Chess {
 	bool isValid() const;
 	bool isExit() const;
 	void excute();
+	void excuteEnPassant();
 	void doTurn();
 
 public:
