@@ -3,19 +3,16 @@
 #include "Board.h"
 
 
-
 int main()
 {
 	/* */   
-	string board = "########pppppppp################################PPPPPPPP########";
-	//board = "################################################################";
+	string board = "rnbqkbnrpppppppp################################PPPPPPPPRNBQKBNR";
 	Board backstageBoard;
-	
-	backstageBoard.testBoard("########pppppppp################################PPPPPPPP########");
-//	string board = "##########K###############################R#############r#r#####";
 	Chess a(board);
 	int codeResponse = 0;
-	string res = a.getInput(); 
+	string res = a.getInput();
+
+	// convert the input to move for the backstage board
 	int ySource = res[0] - 'a';
 	int xSource = res[1] - '1';
 	int yDest = res[2] - 'a';
@@ -23,55 +20,27 @@ int main()
 	Move turnMove;
 	turnMove.start = Location(xSource, ySource);
 	turnMove.end = Location(xDest, yDest);
-	int code = backstageBoard.getCodeOfMoving(turnMove);
-	cout << "code = " << code << endl;
+
+	//check the code of the movement and move the piece in case of legal move
+	codeResponse = backstageBoard.getCodeOfMoving(turnMove);
 
 	while (res != "exit")
 	{
 		backstageBoard.PrintBoard();
-		/* 
-		codeResponse value : 
-		Illegal movements : 
-		11 - there is not piece at the source  
-		12 - the piece in the source is piece of your opponent
-		13 - there one of your pieces at the destination 
-		21 - illegal movement of that piece 
-		31 - this movement will cause you checkmate
-
-		legal movements : 
-		41 - the last movement was legal and cause check 
-		42 - the last movement was legal, next turn 
-		*/
-		
-		//codeResponse = b.getCodeOfMoving(b.convertStringMoveToMove(res));
-
-		/**/
-		{ // put your code here instead that code
-			cout << "code response >> " << code << endl;
-			cin >> codeResponse;			
-		}
-		/**/
 		a.setCodeResponse(codeResponse);
 
 		res = a.getInput(); 
 
-		// conver the input to move 
+		// convert the input to move for the backstage board
 		int ySource = res[0] - 'a';
-		cout << "ySource = " << ySource << endl;
 		int xSource = res[1] - '1';
-		cout << "xSource = " << xSource << endl;
 		int yDest = res[2] - 'a';
-		cout << "yDest = " << yDest << endl;
 		int xDest = res[3] - '1';
-		cout << "xDest = " << xDest << endl;
-		backstageBoard.PrintAllPieces();
-		backstageBoard.getAllLegalMoves(backstageBoard.getTurn());
 		turnMove.start = Location(xSource, ySource);
 		turnMove.end = Location(xDest, yDest);
 
-		// check the code of the movement
-		code = backstageBoard.getCodeOfMoving(turnMove);
-		cout << "code = " << code << endl;
+		// check the code of the movement and move the piece in case of legal move
+		codeResponse = backstageBoard.getCodeOfMoving(turnMove);
 	}
 
 	cout << endl << "Exiting " << endl; 
