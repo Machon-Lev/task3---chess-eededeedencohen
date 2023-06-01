@@ -7,11 +7,11 @@
 int main()
 {
 	/* */   
-	string board = "#######k########################################PPRPPPPP#q##KBNR";
+	string board = "########pppppppp################################PPPPPPPP########";
 	//board = "################################################################";
 	Board backstageBoard;
 	
-	backstageBoard.testBoard("#######k########################################PPRPPPPP#q##KBNR");
+	backstageBoard.testBoard("########pppppppp################################PPPPPPPP########");
 //	string board = "##########K###############################R#############r#r#####";
 	Chess a(board);
 	int codeResponse = 0;
@@ -47,11 +47,12 @@ int main()
 
 		/**/
 		{ // put your code here instead that code
-			cout << "code response >> " << code;
-			//cin >> codeResponse;			
+			cout << "code response >> " << code << endl;
+			cin >> codeResponse;			
 		}
 		/**/
-		a.setCodeResponse(code);
+		a.setCodeResponse(codeResponse);
+
 		res = a.getInput(); 
 
 		// conver the input to move 

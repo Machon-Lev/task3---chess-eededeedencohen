@@ -152,6 +152,24 @@ void Chess::excute()
 
 	setPieces();
 }
+void Chess::excuteEnPassant()
+{
+	int row = (m_input[0] - 'a'); // source row
+	int col = (m_input[1] - '1'); // source col
+	char pieceInSource = m_boardString[(row * 8) + col];
+	m_boardString[(row * 8) + col] = '#';
+
+	row = (m_input[2] - 'a');
+	col = (m_input[3] - '1');
+	m_boardString[(row * 8) + col] = pieceInSource;
+
+	// remove the piece that was eaten by En Passant:
+	row = (m_input[0] - 'a');
+	col = (m_input[3] - '1');
+	m_boardString[(row * 8) + col] = '#';
+
+	setPieces();
+}
 // check the response code and switch turn if needed 
 void Chess::doTurn()
 {
@@ -182,6 +200,14 @@ void Chess::doTurn()
 	{
 		m_msg = "this movement will cause you checkmate \n";
 		break;
+	}
+	case 52:
+	{
+		excuteEnPassant();
+		m_turn = !m_turn;
+		m_msg = "the last movement was legal (en Passant) \n";
+		break;
+
 	}
 	case 41:
 	{
@@ -252,6 +278,7 @@ void Chess::setCodeResponse(int codeResponse)
 {
 	if (((11 <= codeResponse) && (codeResponse <= 13)) ||
 		((21 == codeResponse) || (codeResponse == 31)) ||
-		((41 == codeResponse) || (codeResponse == 42)))
+		((41 == codeResponse) || (codeResponse == 42)) || 
+		(codeResponse == 52))
 		m_codeResponse = codeResponse;
 }

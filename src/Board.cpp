@@ -80,8 +80,6 @@ Board::Board() : board(8, std::vector<Piece*>(8, nullptr)) {
     this->turn = WHITE;
     this->can_en_passant = false;
     this->en_passant_location = Location(-1, -1); //Location(-1, -1);
-    this->blackPlayerHasMoves = true;
-    this->whitePlayerHasMoves = true;
 }
 
 Board::~Board() {
@@ -555,6 +553,7 @@ int Board::CheckIfLegalMove(Move move, Color player)
 			// if the move is legal => run simulation of the move
             if (boardLegalMove.start == move.start && boardLegalMove.end == move.end)
             {
+                move = boardLegalMove;
                 // copy the board with copy constructor:
                 Board boardCopy = Board(*this);
                 // do the move on the board copy:
@@ -564,13 +563,23 @@ int Board::CheckIfLegalMove(Move move, Color player)
                 if (AllLegalMoves.size() != 0)
                 {
                     Color turn = this->turn;
+                    bool theMoveIsEnPassand = false;
+                    if (move.isEat)
+                    {
+                        if (move.end != move.eat)
+                            theMoveIsEnPassand = true;
+					}
                     this->movePiece(move);
                     turn = this->turn;
                     AllLegalMoves = this->getAllLegalMoves(turn);
-                    if (AllLegalMoves.size() == 0)
-						return 41;
+                    if (AllLegalMoves.size() != 0)
+                    {
+                        if (theMoveIsEnPassand)
+                            return 52;
+                        return 42;
+                    }
 					else
-						return 42;
+						return 41;
                 }
 					
 			}
